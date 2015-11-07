@@ -6,7 +6,8 @@ var { StyleSheet } = React;
 
 var styles = StyleSheet.create({
     invoice: {
-        padding: 40,
+        paddingHorizontal: 30,
+        paddingTop: 30,
     },
     buttonWrapper: {
         alignItems: 'center'
