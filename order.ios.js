@@ -4,6 +4,7 @@
 var React = require('react-native');
 var FireBase = require('firebase');
 var ReactFireMixin = require('reactfire');
+var _ = require('lodash');
 
 var DeliveryMap = require('./deliveryMap.ios');
 var DeliveryForm = require('./deliveryForm.ios');
@@ -17,7 +18,8 @@ var config = require('./config.js');
 
 var {
     View,
-    ScrollView
+    ScrollView,
+    LayoutAnimation,
     } = React;
 
 var Order = React.createClass({
@@ -25,12 +27,23 @@ var Order = React.createClass({
     mixins: [ReactFireMixin],
 
     componentWillMount: function() {
-        let ref = new Firebase(config.firebase).child("orders").child(this.props[".key"]);
+        let ref = new Firebase(config.firebase).child("orders").child(this.props.orderKey);
         this.bindAsObject(ref, "order");
     },
 
-    onFormComplete: function(deliveryOptions) {
-        deliveryOptions.confirmed = true;
+    componentWillUpdate() {
+        LayoutAnimation.easeInEaseOut();
+    },
+
+    onFormComplete: function(options) {
+        // Use fake location and time estimate for delivery status
+        var deliveryOptions = Object.assign(options, {
+            confirmed: true,
+            status: {
+                estimate: (options.time.earliest + options.time.latest) / 2,
+                lon: 60.30756633,
+                lat: 24.97501373
+            }});
         this.firebaseRefs['order'].child("delivery").update(deliveryOptions);
     },
 
@@ -46,13 +59,15 @@ var Order = React.createClass({
         return (
             <ScrollView contentContainerStyle={styles.wrapper}>
                 {headComponent}
-                {this.props.actions
-                    .sort((a, b) => a.date < b.date)
+                {
+                    _.chain(this.state.order.actions)
+                    .sortBy(action => -action.date)
                     .map((action, index) => (
                         <Action {...action}
                             service={this.state.order.service.title}
-                            highlight={!this.props.delivery.active && index === 0} />
-                ))}
+                            highlight={!this.state.order.delivery.active && index === 0} />
+                    )).value()
+                }
             </ScrollView>
         );
     }

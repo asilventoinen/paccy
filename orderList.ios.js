@@ -16,6 +16,7 @@ var {
     Image,
     ScrollView,
     TouchableOpacity,
+    LayoutAnimation,
     } = React;
 
 var packImages = [
@@ -64,7 +65,7 @@ var OrderList = React.createClass({
             backButtonTitle: "Back",
             title: order.service.title,
             component: Order,
-            passProps: order,
+            passProps: {orderKey: order[".key"]}
         });
     },
 
@@ -72,9 +73,12 @@ var OrderList = React.createClass({
     render: function() {
         return (
             <ScrollView style={styles.list}>
-                {this.state.orders.map((order, i) => (
-                    <OrderListItem order={order} key={i} onPress={this.onPress.bind(this, order)} />
-                ))}
+                { this.state.orders
+                    .sort((a,b) => a > b)
+                    .map((order, i) => (
+                        <OrderListItem order={order} key={i} onPress={this.onPress.bind(this, order)} />
+                    ))
+                }
             </ScrollView>
         );
     }
