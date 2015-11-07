@@ -36,8 +36,12 @@ var OrderListItem = React.createClass({
             <TouchableOpacity style={styles.item} onPress={this.props.onPress}>
                 <Image style={styles.itemLogo} source={image} />
                 <View style={styles.itemInfo}>
-                    <Text style={styles.itemInfoHeader}>{this.props.order.service.title}</Text>
-                    <Text style={styles.itemInfoFooter}>15.9.2015</Text>
+                    <Text style={styles.itemInfoHeader}>
+                        {this.props.order.service.title}
+                    </Text>
+                    <Text style={styles.itemInfoFooter}>
+                        {this.props.order.invoice.items.length} items - {this.props.order.invoice.total.toFixed(2)} €
+                    </Text>
                 </View>
             </TouchableOpacity>
         );
@@ -49,15 +53,13 @@ var OrderList = React.createClass({
 
     mixins: [ReactFireMixin],
 
-    getInitialState: function() {
-        return {
-            orders: []
-        };
-    },
-
     componentWillMount: function() {
         var ref = new Firebase(config.firebase).child("orders");
         this.bindAsArray(ref, "orders");
+    },
+
+    componentWillUpdate() {
+        LayoutAnimation.easeInEaseOut();
     },
 
     onPress: function(order) {
@@ -74,10 +76,12 @@ var OrderList = React.createClass({
         return (
             <ScrollView style={styles.list}>
                 { this.state.orders
-                    .sort((a,b) => a > b)
+                    .slice()
+                    .reverse()
                     .map((order, i) => (
-                        <OrderListItem order={order} key={i} onPress={this.onPress.bind(this, order)} />
+                        <OrderListItem order={order} key={order[".key"]} onPress={this.onPress.bind(this, order)} />
                     ))
+
                 }
             </ScrollView>
         );
