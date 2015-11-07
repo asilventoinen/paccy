@@ -8,25 +8,37 @@ var styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
-        paddingBottom: 100,
+        padding: 30,
+        paddingBottom: 80,
         borderBottomColor: "#dbdbdb",
         borderBottomWidth: 1,
     },
     heading: {
         fontSize: 20,
         fontWeight: 'bold',
-        color: '#5a6269',
+        color: '#006fc8',
     },
     subheading: {
-        fontSize: 20,
-        color: '#6a7279'
+        fontSize: 18,
+        color: '#323e47',
+    },
+    footer: {
+        fontSize: 12,
+        color: '#006fc8',
+        opacity: 0.8,
+        paddingVertical: 10
     },
     actionImage: {
-        width: 80,
-        height: 93,
-        margin: 20
+        width: 320,
+        height: 247,
+        marginBottom: -50
     },
+    select: {
+        marginVertical: 5,
+    },
+    button: {
+        marginVertical: 15
+    }
 });
 
 module.exports = styles;

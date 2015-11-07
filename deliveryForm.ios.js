@@ -2,10 +2,12 @@
 'use strict';
 
 var React = require('react-native');
+var Dropdown = require('react-native-dropdown');
 var _ = require('lodash');
 
 var Button = require('./button.ios');
 var Select = require('./select');
+
 var styles = require('./deliveryForm.styles.ios');
 
 var {
@@ -13,6 +15,13 @@ var {
     Text,
     Image
     } = React;
+
+var {
+    Select,
+    Option,
+    OptionList,
+    updatePosition
+    } = Dropdown;
 
 var actionImage = require("image!ActionReadyToDeliver");
 
@@ -45,51 +54,78 @@ var timeslots = (function(){
 })();
 
 var DeliveryForm = React.createClass({
+
     getInitialState: function() {
         return {
-            locationConfirmed: false,
-            selectedLocation: {},
-            selectedTime: {}
-        }
+            selectedLocation: locations[0],
+            selectedTime: timeslots[0],
+        };
     },
 
-    onConfirmLocation: function(option) {
-        this.setState({locationConfirmed: true, selectedLocation: option});
+    componentDidMount: function() {
+        updatePosition(this.refs['SELECT1']);
+        updatePosition(this.refs['SELECT2']);
+        updatePosition(this.refs['OPTIONLIST']);
     },
 
-    onConfirmTime: function(option) {
-        this.setState({selectedTime: option});
+    _getOptionList: function() {
+        return this.refs['OPTIONLIST'];
+    },
+
+    onSelectLocation: function(option) {
+        console.log(option);
+        //this.setState({selectedLocation: option.props.data});
+    },
+    onSelectTime: function(option) {
+        //this.setState({selectedTime: option.props.data});
+    },
+    onComplete: function() {
         this.props.onComplete({ location: this.state.selectedLocation, time: this.state.selectedTime });
     },
 
+
     render: function() {
-        let selectTitle = this.state.locationConfirmed ? "First, choose where?" : "And then, choose when?";
 
         return (
             <View style={styles.container}>
                 <Text style={styles.heading}>We are ready to deliver!</Text>
                 <Image style={styles.actionImage} source={actionImage} />
-                <Text style={styles.subheading}>{selectTitle}</Text>
+                <Text style={styles.subheading}>Choose when and where?</Text>
+                <Text style={styles.footer}>You have 48 minutes to choose.</Text>
 
-                { !this.state.locationConfirmed &&
-                <View>
-                    <Select options={locations}
-                            optionFormatter={(location) => location.address}
-                            confirmText={"Continue"}
-                            onConfirm={this.onConfirmLocation}/>
-                </View>
-                }
-                { this.state.locationConfirmed &&
-                <View>
-                    <Select options={timeslots}
-                            optionFormatter={(option) => option.title}
-                            confirmText={"OK!"}
-                            onConfirm={this.onConfirmTime}/>
-                </View>
-                }
+
+                <Select
+                    style={styles.select}
+                    width={250}
+                    ref="SELECT1"
+                    optionListRef={this._getOptionList}
+                    onSelect={this.onSelectLocation()}>
+                    {locations.map((option, i) => (
+                        <Option key={i}>
+                            <Text data={option}>{option.address}</Text>
+                        </Option>))}
+                </Select>
+
+                <Select
+                    style={styles.select}
+                    width={250}
+                    ref="SELECT2"
+                    optionListRef={this._getOptionList}
+                    onSelect={this.onSelectTime}>
+                    {timeslots.map((option, i) => (
+                        <Option key={i}>
+                            <Text data={option}>{option.title}</Text>
+                        </Option>))}
+                </Select>
+
+                <Button jumbo={true} style={styles.button} onPress={this.onComplete}>OK</Button>
+
+                <OptionList ref="OPTIONLIST"/>
             </View>
         );
+
     }
+
 });
 
 module.exports = DeliveryForm;
