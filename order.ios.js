@@ -37,12 +37,12 @@ var Order = React.createClass({
 
     onFormComplete: function(options) {
         // Use fake location and time estimate for delivery status
-        var deliveryOptions = Object.assign(options, {
+        let deliveryOptions = Object.assign(options, {
             confirmed: true,
             status: {
                 estimate: (options.time.earliest + options.time.latest) / 2,
-                lon: 60.30756633,
-                lat: 24.97501373
+                lon: 60.21978124,
+                lat: 24.93535995
             }});
         this.firebaseRefs['order'].child("delivery").update(deliveryOptions);
     },
@@ -56,22 +56,24 @@ var Order = React.createClass({
             headComponent = <Invoice {...this.state.order.invoice} />
         }
 
+        let actionHighlighted;
         return (
             <ScrollView contentContainerStyle={styles.wrapper}>
                 {headComponent}
                 {
                     _.chain(this.state.order.actions)
                     .sortBy(action => -action.date)
-                    .map((action, index) => (
+                    .map((action, key) => (
                         <Action {...action}
+                            key={key}
                             service={this.state.order.service.title}
-                            highlight={!this.state.order.delivery.active && index === 0} />
+                            highlight={!this.state.order.delivery.active &&
+                                       (actionHighlighted ? false : actionHighlighted = true)} />
                     )).value()
                 }
             </ScrollView>
         );
     }
-
 });
 
 
