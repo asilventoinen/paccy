@@ -4,6 +4,7 @@
 var React = require('react-native');
 var Dropdown = require('react-native-dropdown');
 var _ = require('lodash');
+var moment = require('moment');
 
 var Button = require('./button.ios');
 var Select = require('./select');
@@ -29,14 +30,14 @@ var actionImage = require("image!ActionReadyToDeliver");
 
 var locations = [
     {
-        address: "Rauhankatu 2, Helsinki",
-        lon: 64.345345,
-        lat: 24.56363
+        address: "Aleksis Kiven katu 17, Helsinki",
+        lon: 60.1912472,
+        lat: 24.9483582
     },
     {
         address: "Helsinginkatu 4, Helsinki",
-        lon: 64.345345,
-        lat: 24.56363
+        lon: 60.18751052,
+        lat: 24.95992899
     },
     {
         address: "Other...",
@@ -45,13 +46,17 @@ var locations = [
 
 // We'll create fresh & hard-coded time slots
 
-var timeslots = (function(){
-    return [
-        { id: 0, title: 'Today, 16:00-20:00', earliest: Date.now + 1000, latest: Date.now + 3000},
-        { id: 1, title: 'Tomorrow, 8:00-12:00', earliest: Date.now + 3000, latest: Date.now + 5000},
-        { id: 1, title: 'Tomorrow, 12:00-16:00', earliest: Date.now + 3000, latest: Date.now + 5000},
-    ];
-})();
+var timeslots = [
+    {title: "Tomorrow, 8:00-12:00"},
+    {title: "Tomorrow, 12:00-16:00"},
+    {title: "Tomorrow, 16:00-20:00"}
+];
+
+var deliveryTime = moment().add(1, 'days').startOf('day').add(8, 'hours');
+for(var i=0;i<timeslots.length;i++) {
+    timeslots[i].earliest = deliveryTime.unix();
+    timeslots[i].latest = deliveryTime.add(4, 'hours').unix();
+}
 
 var DeliveryForm = React.createClass({
 
@@ -73,11 +78,10 @@ var DeliveryForm = React.createClass({
     },
 
     onSelectLocation: function(option) {
-        console.log(option);
-        //this.setState({selectedLocation: option.props.data});
+        this.setState({selectedLocation: option.props.data});
     },
     onSelectTime: function(option) {
-        //this.setState({selectedTime: option.props.data});
+        this.setState({selectedTime: option.props.data});
     },
     onComplete: function() {
         this.props.onComplete({ location: this.state.selectedLocation, time: this.state.selectedTime });
@@ -99,7 +103,7 @@ var DeliveryForm = React.createClass({
                     width={250}
                     ref="SELECT1"
                     optionListRef={this._getOptionList}
-                    onSelect={this.onSelectLocation()}>
+                    onSelect={this.onSelectLocation}>
                     {locations.map((option, i) => (
                         <Option key={i}>
                             <Text data={option}>{option.address}</Text>
