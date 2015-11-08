@@ -20,10 +20,10 @@ var {
     } = React;
 
 var packImages = [
-    require("image!Pack0"),
-    require("image!Pack1"),
-    require("image!Pack2"),
-    require("image!Pack3"),
+    require("./images/Pack0.png"),
+    require("./images/Pack1.png"),
+    require("./images/Pack2.png"),
+    require("./images/Pack3.png"),
     ];
 
 

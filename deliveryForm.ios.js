@@ -24,20 +24,20 @@ var {
     updatePosition
     } = Dropdown;
 
-var actionImage = require("image!ActionReadyToDeliver");
+var actionImage = require("./images/ActionReadyToDeliver.png");
 
 // Let's use hard-coded addresses!
 
 var locations = [
     {
         address: "Aleksis Kiven katu 17, Helsinki",
-        lon: 60.1912472,
-        lat: 24.9483582
+        lat: 60.1912472,
+        lon: 24.9483582
     },
     {
         address: "Helsinginkatu 4, Helsinki",
-        lon: 60.18751052,
-        lat: 24.95992899
+        lat: 60.18751052,
+        lon: 24.95992899
     },
     {
         address: "Other...",

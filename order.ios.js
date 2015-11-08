@@ -41,8 +41,8 @@ var Order = React.createClass({
             confirmed: true,
             status: {
                 estimate: (options.time.earliest + options.time.latest) / 2,
-                lon: 60.21978124,
-                lat: 24.93535995
+                lat: 60.21978124,
+                lon: 24.93535995
             }});
         this.firebaseRefs['order'].child("delivery").update(deliveryOptions);
     },
@@ -57,6 +57,7 @@ var Order = React.createClass({
         }
 
         let actionHighlighted;
+        // TODO: Proper action ids, using date as a key for now
         return (
             <ScrollView contentContainerStyle={styles.wrapper}>
                 {headComponent}
@@ -65,7 +66,7 @@ var Order = React.createClass({
                     .sortBy(action => -action.date)
                     .map((action, key) => (
                         <Action {...action}
-                            key={key}
+                            key={action.date}
                             service={this.state.order.service.title}
                             highlight={!this.state.order.delivery.active &&
                                        (actionHighlighted ? false : actionHighlighted = true)} />

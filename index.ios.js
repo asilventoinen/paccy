@@ -34,8 +34,8 @@ var Paccy = React.createClass({
                     title: "Orders",
                     component: OrderList,
                     backButtonTitle: "Orders",
-                    leftButtonIcon: require('image!NavigatorLogo'),
-                    rightButtonIcon: require('image!NavigatorUser'),
+                    leftButtonIcon: require('./images/NavigatorLogo.png'),
+                    rightButtonIcon: require('./images/NavigatorUser.png'),
                     onRightButtonPress: this.onRightButtonPress
                 }}
                 />

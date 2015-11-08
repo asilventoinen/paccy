@@ -16,10 +16,10 @@ var {
     } = React;
 
 var actionImages = {
-    orderReceived: require("image!ActionOrderReceived"),
-    orderSent: require("image!ActionOrderSent"),
-    preparingDelivery: require("image!ActionPreparingDelivery"),
-    orderDelivered: require("image!ActionOrderDelivered")
+    orderReceived: require("./images/ActionOrderReceived.png"),
+    orderSent: require("./images/ActionOrderSent.png"),
+    preparingDelivery: require("./images/ActionPreparingDelivery.png"),
+    orderDelivered: require("./images/ActionOrderDelivered.png")
 };
 
 var Action = React.createClass({
