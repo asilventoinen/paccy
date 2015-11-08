@@ -51,6 +51,7 @@ var styles = StyleSheet.create({
     text: {
         color: '#328bd2',
         textAlign: 'center',
+        fontSize: 14,
     },
     textJumbo: {
         color: '#fff',
