@@ -11,8 +11,9 @@ var styles = StyleSheet.create({
     menu: {
         flexDirection: 'column',
         alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingHorizontal: 30,
+        paddingTop: 15,
+        paddingBottom: 30,
 
         borderColor: "#dbdbdb",
         borderTopWidth: 1,
@@ -20,6 +21,7 @@ var styles = StyleSheet.create({
     },
 
     body: {
+        fontSize: 15,
         textAlign: 'center',
         paddingVertical: 5,
         color: '#6a7279',
